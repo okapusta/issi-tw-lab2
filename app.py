@@ -6,7 +6,8 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def home():
-    return render_template("home.html", movies=__fetch_movies())
+    manager = DatabaseManager(dataclass=Movie)
+    return render_template("home.html", movies=manager.list_movies())
 
 @app.route("/movies/new", methods=['GET'])
 def new_movie():
@@ -20,7 +21,8 @@ def create_movie():
         actors=request.form.get('actors')
     )
     if movie.valid():
-        __create_movie(movie)
+        manager = DatabaseManager(dataclass=Movie)
+        manager.create_movie(movie)
         return redirect("/")
     else:
         pass
@@ -28,19 +30,7 @@ def create_movie():
 @app.route("/movies-destroy", methods=['POST'])
 def destroy_movie():
     movies_to_remove_ids = request.form.getlist('movies-to-remove')
-    app.logger.debug('movies to remove', list(movies_to_remove_ids))
-    __destroy_movies(list(movies_to_remove_ids))
+    # app.logger.debug('movies to remove', list(movies_to_remove_ids))
+    manager = DatabaseManager(dataclass=Movie)
+    manager.destroy_movies(list(movies_to_remove_ids))
     return redirect("/")
-
-def __fetch_movies():
-    manager = DatabaseManager(dataclass=Movie)
-    return manager.list_movies()
-
-def __create_movie(movie):
-    manager = DatabaseManager(dataclass=Movie)
-    manager.create_movie(movie)
-
-def __destroy_movies(ids_to_remove):
-    manager = DatabaseManager(dataclass=Movie)
-    return manager.destroy_movies(ids_to_remove)
-
