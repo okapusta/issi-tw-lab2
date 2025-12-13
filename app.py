@@ -25,7 +25,7 @@ def create_movie():
         manager.create_movie(movie)
         return redirect("/")
     else:
-        pass
+        return redirect('/movies/new')
 
 @app.route("/movies-destroy", methods=['POST'])
 def destroy_movie():

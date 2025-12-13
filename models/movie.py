@@ -9,4 +9,4 @@ class Movie():
   id: int = None
 
   def valid(self):
-    return True
+    return len(self.title) > 0 and self.year and len(self.actors) > 0
