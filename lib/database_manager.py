@@ -3,10 +3,10 @@ import sqlite3
 from models import Movie
 class DatabaseManager():
   def with_connection(func):
-    def wrapper(self):
+    def wrapper(self, *args):
       self.db = sqlite3.connect('movies.db')
       self.cursor = self.db.cursor()
-      result = func(self)
+      result = func(self, *args)
       self.db.close()
 
       return result
