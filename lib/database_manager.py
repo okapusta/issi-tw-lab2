@@ -1,6 +1,7 @@
 import sqlite3
 
 from models import Movie
+
 class DatabaseManager():
   def with_connection(func):
     def wrapper(self, *args):
